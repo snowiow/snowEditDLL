@@ -1,8 +1,9 @@
+#include <stdlib.h>
+#include <string.h>
+
 #include "global.h"
 #include "set.h"
-#include <stdlib.h>
-#include <stdio.h>
-#include <string.h>
+
 
 uint sdbm(char *str) {
     uint hash = 0;
@@ -13,14 +14,12 @@ uint sdbm(char *str) {
 }
 
 void setRealloc(Set *set) {
-    set->elems = (DArray**) realloc(set->elems, sizeof(set->elems) * 2);
+    set->elems = (DArray**) realloc(set->elems, set->totalCapacity * 2);
     set->length *= 2;
-    set->totalCapacity = sizeof(set->elems);
-
+    set->totalCapacity *= 2;
     uint i;
-    for (i = set->length/2; i < set->length; i++){
+    for (i = set->length/2 + 1; i < set->length; i++)
         set->elems[i] = NULL;
-    }
 }
 
 Set *newSet() {
@@ -40,6 +39,7 @@ Set *newSet() {
 
 void setInsert(Set *set, char* value) {
     //realloc if 50% of available memory reached
+    // printf("curCapacity: %d > totalCapacity: %d /2", set->curCapacity, set->totalCapacity);
     if (set->curCapacity > set->totalCapacity / 2) {
         setRealloc(set);
     }
@@ -47,13 +47,15 @@ void setInsert(Set *set, char* value) {
     * calculate hash with sdbm algorithm and set range to the currently
     * reserved space
     */
-    uint hash = sdbm(value) % (set->totalCapacity/sizeof(DArray));
+    // printf("sdbm(%d) mod set->totalCapacity(%d) /sizeofDarray(%d)\n", sdbm(value), set->totalCapacity, size);
+    uint hash = (uint) (sdbm(value) % (set->totalCapacity/sizeof(DArray)));
+
     if (set->elems[hash] == NULL) {
         set->elems[hash] = newDArray();
         dArrayAppend(set->elems[hash], value);
-        set->curCapacity += sizeof(value);
-   }
-   else {
+        set->curCapacity += sizeof(DArray*);
+    }
+    else {
         uint i = 0;
         bool containsElem = false;
         while (i < set->elems[hash]->length && !containsElem) {
@@ -63,10 +65,8 @@ void setInsert(Set *set, char* value) {
             }
             i++;
         }
-        if (!containsElem) {
+        if (!containsElem)
             dArrayAppend(set->elems[hash], value);
-            set->curCapacity += sizeof(value);
-        }
    }
 }
 
@@ -91,5 +91,6 @@ void setFree(Set *set) {
             dArrayFree(set->elems[i]);
     }
     free(set->elems);
+    set->elems = NULL;
     free(set);
 }

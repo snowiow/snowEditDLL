@@ -1,6 +1,7 @@
-#include "darray.h"
 #include <stdlib.h>
 #include <string.h>
+
+#include "darray.h"
 
 DArray *newDArray() {
     DArray *arr = (DArray*) malloc(sizeof(DArray));
@@ -11,14 +12,19 @@ DArray *newDArray() {
 
 void dArrayAppend(DArray *arr, char *elem) {
     if (arr->length == 0) {
-        arr->elems = (char**) malloc(sizeof(char*) * 10);
-        arr->capacity = sizeof(arr->elems);
+        arr->elems = (char**) malloc(10 * sizeof(char*));
+        arr->capacity = 10 * sizeof(char*);
+
+        uint i;
+        for (i = 0; i < arr->capacity/sizeof(char*); i++){
+            arr->elems[i] = NULL;
+        }
     }
-    if (arr->capacity < (arr->length + 1) * sizeof(char*)) {
-        arr->elems = (char**) realloc(arr->elems, sizeof(arr->elems) * 2);
-        arr->capacity = sizeof(arr->elems);
+    if (arr->capacity <= (arr->length) * sizeof(char*)) {
+        arr->elems = (char**) realloc(arr->elems, arr->capacity * 2);
+        arr->capacity *= 2;
     }
-    arr->elems[arr->length] = (char*) malloc(strlen(elem) * sizeof(char));
+    arr->elems[arr->length] = (char*) malloc(strlen(elem) * sizeof(char*));
     strcpy(arr->elems[arr->length], elem);
     arr->length++;
 }

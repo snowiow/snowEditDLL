@@ -1,9 +1,11 @@
 #ifndef SET_H
 #define SET_H
 
+#include <stdbool.h>
+
 #include "set.h"
 #include "darray.h"
-#include <stdbool.h>
+
 
 typedef struct {
     //the elems of the set

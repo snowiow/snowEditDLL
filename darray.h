@@ -1,5 +1,6 @@
 #ifndef DARRAY_H
 #define DARRAY_H
+
 #include "global.h"
 
 typedef struct {

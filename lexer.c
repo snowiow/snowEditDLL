@@ -1,10 +1,10 @@
-#include "lexer.h"
-#include "global.h"
-#include "set.h"
 #include <string.h>
 #include <stdlib.h>
 #include <stdbool.h>
-#include <stdio.h>
+
+#include "lexer.h"
+#include "global.h"
+
 
 DArray *tokenize(char* text) {
     Set *s = newSet();
@@ -16,7 +16,7 @@ DArray *tokenize(char* text) {
                 i++;
                 switch(text[i]) {
                     case '/':
-                        while (text[i] != '\n') {
+                        while (i < strlen(text) && text[i] != '\n') {
                             i++;
                         }
                         break;
@@ -44,8 +44,10 @@ DArray *tokenize(char* text) {
                 break;
         }
     }
-
-    return getElemsFromSet(s);
+    DArray *arr = getElemsFromSet(s);
+    setFree(s);
+    s = NULL;
+    return arr;
 }
 
 void tokenizeWord(Set *s, ulong *i, char *text) {
@@ -73,7 +75,7 @@ void tokenizeWord(Set *s, ulong *i, char *text) {
                 case '{':
                 case '}':
                     end = (*i);
-                    eow= true;
+                    eow = true;
                     (*i)++;
                     break;
                 default:
@@ -82,7 +84,7 @@ void tokenizeWord(Set *s, ulong *i, char *text) {
             }
         }
         char cur[end - start + 1];
-        strncpy(cur, text+start, end);
+        strncpy(cur, text+start, end - start);
         cur[end-start] = '\0';
         setInsert(s, cur);
     }

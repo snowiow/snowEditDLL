@@ -4,7 +4,7 @@
 #include "darray.h"
 #include "set.h"
 
-DArray *tokenize(char* text);
-void tokenizeWord(Set *s, ulong *i, char *text);
+DArray *tokenize(const char* text);
+void tokenizeWord(Set *s, ulong *i, const char *text);
 
 #endif

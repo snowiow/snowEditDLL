@@ -10,7 +10,7 @@ DArray *newDArray() {
     return arr;
 }
 
-void dArrayAppend(DArray *arr, char *elem) {
+void dArrayAppend(DArray *arr, const char *elem) {
     if (arr->length == 0) {
         arr->elems = (char**) malloc(10 * sizeof(char*));
         arr->capacity = 10 * sizeof(char*);
@@ -29,7 +29,7 @@ void dArrayAppend(DArray *arr, char *elem) {
     arr->length++;
 }
 
-void dArrayRemove(DArray *arr, uint index) {
+void dArrayRemove(DArray *arr, const uint index) {
     uint i;
     for(i = index; i < arr->length; i++) {
         arr->elems[i] = arr->elems[i+1];

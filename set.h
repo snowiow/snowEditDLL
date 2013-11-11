@@ -19,10 +19,10 @@ typedef struct {
 } Set;
 
 Set *newSet();
-void setInsert(Set *set, char* value);
+void setInsert(Set *set, const char* value);
 void setRealloc(Set * set);
-uint sdbm(char *str);
-DArray *getElemsFromSet(Set *set);
+uint sdbm(const char *str);
+DArray *getElemsFromSet(const Set *set);
 void setFree(Set *set);
 
 #endif

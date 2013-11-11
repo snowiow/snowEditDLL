@@ -78,12 +78,13 @@ int main(int argc, const char* argv[]) {
 
     fclose(quelle);
 
-    DArray *test2 = tokenize(text);
-    // uint i;
-    // for (i = 0; i < test2->length; i++) {
-    //     printf("%s\n", test2->elems[i]);
-    // }
+    DArray *result = tokenize(text);
+    uint i;
+    for (i = 0; i < 2; i++) {
+        printf("%s\n", result->elems[i]);
+    }
 
-    dArrayFree(test2);
+    dArrayFree(result);
+
     return 0;
 }

@@ -5,7 +5,7 @@
 #include "set.h"
 
 
-uint sdbm(char *str) {
+uint sdbm(const char *str) {
     uint hash = 0;
     int c = 0;
     while ((c = *str++))
@@ -37,7 +37,7 @@ Set *newSet() {
     return set;
 }
 
-void setInsert(Set *set, char* value) {
+void setInsert(Set *set, const char* value) {
     //realloc if 50% of available memory reached
     // printf("curCapacity: %d > totalCapacity: %d /2", set->curCapacity, set->totalCapacity);
     if (set->curCapacity > set->totalCapacity / 2) {
@@ -70,7 +70,7 @@ void setInsert(Set *set, char* value) {
    }
 }
 
-DArray *getElemsFromSet(Set *set) {
+DArray *getElemsFromSet(const Set *set) {
     DArray *result = newDArray();
     uint i = 0;
     uint j;
@@ -80,6 +80,7 @@ DArray *getElemsFromSet(Set *set) {
                 dArrayAppend(result, set->elems[i]->elems[j]);
         }
     }
+
     return result;
 }
 

@@ -6,7 +6,7 @@
 #include "global.h"
 
 
-DArray *tokenize(char* text) {
+DArray *tokenize(const char* text) {
     Set *s = newSet();
     ulong i = 0;
 
@@ -45,12 +45,10 @@ DArray *tokenize(char* text) {
         }
     }
     DArray *arr = getElemsFromSet(s);
-    setFree(s);
-    s = NULL;
     return arr;
 }
 
-void tokenizeWord(Set *s, ulong *i, char *text) {
+void tokenizeWord(Set *s, ulong *i, const char *text) {
     bool eow = false;
     ulong start = *i;
     ulong end = start;

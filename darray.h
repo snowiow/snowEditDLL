@@ -15,8 +15,8 @@ typedef struct {
 
 DArray *newDArray();
 
-void dArrayAppend(DArray *arr, char *elem);
-void dArrayRemove(DArray *arr, uint index);
+void dArrayAppend(DArray *arr, const char *elem);
+void dArrayRemove(DArray *arr, const uint index);
 void dArrayFree(DArray *arr);
 
 #endif

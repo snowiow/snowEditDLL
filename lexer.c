@@ -4,10 +4,13 @@
 
 #include "lexer.h"
 #include "global.h"
+#include "mempool.h"
 
 
 DArray *tokenize(const char* text) {
-    Set *s = newSet();
+    MemPool *m = newMemPool();
+    Set *s = newSet(m);
+
     ulong i = 0;
 
     while (i < strlen(text)) {
@@ -45,6 +48,7 @@ DArray *tokenize(const char* text) {
         }
     }
     DArray *arr = getElemsFromSet(s);
+    setFree(s);
     return arr;
 }
 
@@ -72,7 +76,6 @@ void tokenizeWord(Set *s, ulong *i, const char *text) {
                 case '[':
                 case '{':
                 case '}':
-                    end = (*i);
                     eow = true;
                     (*i)++;
                     break;
@@ -81,6 +84,7 @@ void tokenizeWord(Set *s, ulong *i, const char *text) {
                     break;
             }
         }
+        end = (*i);
         char cur[end - start + 1];
         strncpy(cur, text+start, end - start);
         cur[end-start] = '\0';

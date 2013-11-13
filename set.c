@@ -4,7 +4,6 @@
 #include "global.h"
 #include "set.h"
 
-
 uint sdbm(const char *str) {
     uint hash = 0;
     int c = 0;
@@ -22,12 +21,14 @@ void setRealloc(Set *set) {
         set->elems[i] = NULL;
 }
 
-Set *newSet() {
+Set *newSet(MemPool *m) {
     Set *set = (Set*) malloc(sizeof(Set));
     set->elems = (DArray**) malloc(10 * sizeof(DArray*));
     set->length = 10;
     set->curCapacity = 0;
     set->totalCapacity = 10 * sizeof(DArray*);
+
+    set->m = m;
 
     uint i;
     for (i = 0; i < set->length; i++){
@@ -51,7 +52,7 @@ void setInsert(Set *set, const char* value) {
     uint hash = (uint) (sdbm(value) % (set->totalCapacity/sizeof(DArray)));
 
     if (set->elems[hash] == NULL) {
-        set->elems[hash] = newDArray();
+        set->elems[hash] = newDArray(set->m);
         dArrayAppend(set->elems[hash], value);
         set->curCapacity += sizeof(DArray*);
     }
@@ -71,7 +72,7 @@ void setInsert(Set *set, const char* value) {
 }
 
 DArray *getElemsFromSet(const Set *set) {
-    DArray *result = newDArray();
+    DArray *result = newDArray(set->m);
     uint i = 0;
     uint j;
     for (i = 0; i < set->length; i++) {
@@ -80,7 +81,6 @@ DArray *getElemsFromSet(const Set *set) {
                 dArrayAppend(result, set->elems[i]->elems[j]);
         }
     }
-
     return result;
 }
 
@@ -92,6 +92,5 @@ void setFree(Set *set) {
             dArrayFree(set->elems[i]);
     }
     free(set->elems);
-    set->elems = NULL;
     free(set);
 }

@@ -2,6 +2,7 @@
 #define DARRAY_H
 
 #include "global.h"
+#include "mempool.h"
 
 typedef struct {
     //The count of elems
@@ -11,12 +12,13 @@ typedef struct {
     //The array itself
     char** elems;
 
+    MemPool *m;
+
 } DArray;
 
-DArray *newDArray();
+DArray *newDArray(MemPool *m);
 
 void dArrayAppend(DArray *arr, const char *elem);
-void dArrayRemove(DArray *arr, const uint index);
 void dArrayFree(DArray *arr);
 
 #endif

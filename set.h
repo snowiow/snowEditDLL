@@ -5,7 +5,7 @@
 
 #include "set.h"
 #include "darray.h"
-
+#include "mempool.h"
 
 typedef struct {
     //the elems of the set
@@ -16,9 +16,10 @@ typedef struct {
     uint curCapacity;
     //the maximum capicity of the set
     uint totalCapacity;
+    MemPool *m;
 } Set;
 
-Set *newSet();
+Set *newSet(MemPool *m);
 void setInsert(Set *set, const char* value);
 void setRealloc(Set * set);
 uint sdbm(const char *str);

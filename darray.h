@@ -16,9 +16,13 @@ typedef struct {
 
 } DArray;
 
+
+
 DArray *newDArray(MemPool *m);
 
 void dArrayAppend(DArray *arr, const char *elem);
+
 void dArrayFree(DArray *arr);
+
 
 #endif

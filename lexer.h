@@ -5,6 +5,6 @@
 #include "set.h"
 
 DArray *tokenize(const char* text);
-void tokenizeWord(Set *s, ulong *i, const char *text);
+void tokenizeWord(Set *s, ulong *i, const char *text, int *cursorFound, const int level);
 
 #endif

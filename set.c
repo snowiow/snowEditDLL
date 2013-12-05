@@ -71,8 +71,20 @@ void setInsert(Set *set, const char* value) {
    }
 }
 
+void setAppend(Set *set1, Set *set2) {
+    uint i;
+    uint j;
+    for (i = 0; i < set2->length; i++) {
+        if (set2->elems[i] != NULL) {
+            for (j = 0; j < set2->elems[i]->length; j++)
+                setInsert(set1, set2->elems[i]->elems[j]);
+        }
+    }
+}
+
 DArray *getElemsFromSet(const Set *set) {
-    DArray *result = newDArray(set->m);
+    MemPool *m = newMemPool();
+    DArray *result = newDArray(m);
     uint i = 0;
     uint j;
     for (i = 0; i < set->length; i++) {
@@ -83,7 +95,6 @@ DArray *getElemsFromSet(const Set *set) {
     }
     return result;
 }
-
 
 void setFree(Set *set) {
     uint i;

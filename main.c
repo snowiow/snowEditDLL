@@ -7,6 +7,17 @@
 
 
 int main(int argc, const char* argv[]) {
+    // MemPool *m = newMemPool();
+    // char* test = memPoolAlloc(m, 5);
+    // strcpy(test, "$abcd");
+
+
+    // char* test2 = memPoolAlloc(m, 6);
+    // strcpy(test2, "$wasge");
+
+    // printf("%s\n", test);
+    // printf("%s\n", test2);
+    // memPoolFree(m);
     // MemPool *m =newMemPool();
     // DArray *arr = newDArray(m);
     // dArrayAppend(arr, "hallo");
@@ -70,39 +81,39 @@ int main(int argc, const char* argv[]) {
     // memPoolFree(m);
     // m = NULL;
 
-    // printf("Tokenize Tests: \n");
-    // DArray *test = tokenize("$i = 1; //$123\n/* $567 */ $j\n 123 45\n");
-    // printf("Found Variables:\n");
-
-    // for (i = 0; i < test->length; i++) {
-    //     printf("%s\n", test->elems[i]);
-    // }
-    // memPoolFree(test->m);
-    // dArrayFree(test);
-    // test = NULL;
+    printf("Tokenize Tests: \n");
+    // DArray *test3 = tokenize("$i = 1; //$123\n/*$1 */ {$567{$halligalli}} $j\n {$fe{$te__cst}} 45\n");
+    DArray *test4 = tokenize("{{$abc__c}}");
+    printf("Found Variables:\n");
+    uint i;
+    for (i = 0; i < test4->length; i++) {
+        printf("%s\n", test4->elems[i]);
+    }
+    memPoolFree(test4->m);
+    dArrayFree(test4);
+    test4 = NULL;
 
     // printf("Final test with file:\n");
-    FILE *quelle;
-    char puffer[80], text[4000] = "";
+    // FILE *quelle;
+    // char puffer[80], text[4000] = "";
 
-    if ((quelle=fopen("test2.rs","r")) == NULL) {
-        // fprintf(stderr, "Kann test.rs nicht oeffnen\n");
-        return -1;
-    }
+    // if ((quelle=fopen("test2.rs","r")) == NULL) {
+    //     // fprintf(stderr, "Kann test.rs nicht oeffnen\n");
+    //     return -1;
+    // }
 
-    while (fgets(puffer, 80, quelle))
-        strcat(text, puffer);
+    // while (fgets(puffer, 80, quelle))
+    //     strcat(text, puffer);
 
-    fclose(quelle);
+    // fclose(quelle);
 
-    DArray *result = tokenize(text);
+    // DArray *result = tokenize(text);
     // uint i;
     // for (i = 0; i < result->length; i++) {
     //     printf("%s\n", result->elems[i]);
     // }
-
-    memPoolFree(result->m);
-    dArrayFree(result);
+    // memPoolFree(result->m);
+    // dArrayFree(result);
 
     return 0;
 }

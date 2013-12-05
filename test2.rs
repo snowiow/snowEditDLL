@@ -60,7 +60,7 @@
         //$ptr_exp = null + 4; /// fails - done
         //$ptr_exp1 -> $pi + 4; /// fails - done
         //$ptr_exp2 <- $ptr1 + 4; /// fails - done
-
+		
         $ptr_exp_t2 = $ptr1 + 2; /// done
 
         @five = [1, 2, 3, 4]; /// done

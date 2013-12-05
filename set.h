@@ -21,9 +21,10 @@ typedef struct {
 
 Set *newSet(MemPool *m);
 void setInsert(Set *set, const char* value);
+DArray *getElemsFromSet(const Set *set);
+void setAppend(Set *set1, Set *set2);
 void setRealloc(Set * set);
 uint sdbm(const char *str);
-DArray *getElemsFromSet(const Set *set);
 void setFree(Set *set);
 
 #endif

@@ -1,6 +1,5 @@
 #include <stdlib.h>
 #include <string.h>
-
 #include "darray.h"
 
 DArray *newDArray(MemPool *m) {
@@ -25,6 +24,11 @@ void dArrayAppend(DArray *arr, const char *elem) {
     if (arr->capacity <= (arr->length) * sizeof(char*)) {
         arr->elems = (char**) realloc(arr->elems, arr->capacity * 2);
         arr->capacity *= 2;
+        uint i;
+        for (i = (arr->capacity/sizeof(char*)) / 2 + 1; i < arr->capacity/sizeof(char*); i++){
+            arr->elems[i] = NULL;
+        }
+
     }
     arr->elems[arr->length] = memPoolAlloc(arr->m, strlen(elem));
     strcpy(arr->elems[arr->length], elem);

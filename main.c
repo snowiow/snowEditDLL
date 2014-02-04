@@ -83,7 +83,7 @@ int main(int argc, const char* argv[]) {
 
     printf("Tokenize Tests: \n");
     // DArray *test3 = tokenize("$i = 1; //$123\n/*$1 */ {$567{$halligalli}} $j\n {$fe{$te__cst}} 45\n");
-    DArray *test4 = tokenize("{{$abc__c}}");
+    DArray *test4 = tokenize("}");
     printf("Found Variables:\n");
     uint i;
     for (i = 0; i < test4->length; i++) {

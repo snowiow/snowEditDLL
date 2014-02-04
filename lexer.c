@@ -44,8 +44,11 @@ DArray *tokenize(const char* text) {
                     i += 1;
                     break;
                 case '}':
-                    if (cursorFound == -1)
-                        dArraySDelete(levelSets, level);
+                    if (cursorFound == -1) {
+                        if (level > 0) {
+                            dArraySDelete(levelSets, level);
+                        }
+                    }
                     else
                         cursorFound = -2;
                     level -= 1;

@@ -17,69 +17,73 @@ DArray *tokenize(const char* text) {
     int cursorFound = -1;
     ulong i = 0;
     while (i < strlen(text)) {
-            switch(text[i]) {
-                case '/':
-                    i += 1;
-                    switch(text[i]) {
-                        case '/':
-                            while (i < strlen(text) && text[i] != '\n') {
-                                i += 1;
-                            }
-                            break;
-                        case '*':
-                            while (i < strlen(text) && (text[i] != '/' && text[i+1] != '*')) {
-                                i += 1;
-                            }
+        switch(text[i]) {
+            case '/':
+                i += 1;
+                switch(text[i]) {
+                    case '/':
+                        while (i < strlen(text) && text[i] != '\n')
                             i += 1;
-                            break;
-                        default:
+                        break;
+                    case '*':
+                        while (i < strlen(text) && (text[i] != '/' && text[i+1] != '*'))
                             i += 1;
-                            break;
-                    }
-                    break;
-                case '{':
-                    if (cursorFound == -1)
-                        dArraySAppend(levelSets);
-                    level += 1;
+                        i += 1;
+                        break;
+                    default:
+                        i += 1;
+                        break;
+                }
+                break;
+            case '\"':
+                printf("%lu\n", i);
+                i += 1;
+                while (i < strlen(text) && text[i] != '\"' ) {
                     i += 1;
-                    break;
-                case '}':
-                    if (cursorFound == -1) {
-                        if (level > 0) {
-                            dArraySDelete(levelSets, level);
-                        }
-                    }
-                    else
-                        cursorFound = -2;
+                }
+                break;
+            case '{':
+                if (cursorFound >= -1)
+                    dArraySAppend(levelSets);
+                level += 1;
+                i += 1;
+                break;
+            case '}':
+                if ((cursorFound == -1 && level > 0) ||
+                    (cursorFound > -1 && cursorFound < level))
+                    dArraySDelete(levelSets, level);
+                if (level > 0)
                     level -= 1;
+                if (cursorFound > -1) {
+                    if (cursorFound > level || level == 0)
+                        cursorFound = -2;
+                }
+                i += 1;
+                break;
+            case '_':
+                i += 1;
+                if (text[i] == '_') {
                     i += 1;
-                    break;
-                case '_':
-                    i += 1;
-                    if (text[i] == '_') {
-                        i += 1;
-                        if (text[i] == 'c') {
-                            cursorFound = level;
-                            i += 1;
-                        }
-                    }
-                    break;
-                case '$':
-                case '@':
-                   if (cursorFound == -1 || (level == 0 && cursorFound != 2)) {
-                    tokenizeWord(levelSets->elems[level], &i, text, &cursorFound, level);
-                    }
-                    else {
+                    if (text[i] == 'c') {
+                        cursorFound = level;
                         i += 1;
                     }
-                    break;
-                default:
+                }
+                break;
+            case '$':
+            case '@':
+               if (cursorFound >= -1 || level == 0 ) {
+                tokenizeWord(levelSets->elems[level], &i, text, &cursorFound, level);
+                }
+                else {
                     i += 1;
-                    break;
-            }
+                }
+                break;
+            default:
+                i += 1;
+                break;
+        }
     }
-    // for (i = 0; i < cursorFound; i++)
-    //     dArraySDelete(levelSets, i);
     DArray *arr = createDArrayFromDArrayS(levelSets);
     dArraySFree(levelSets);
     return arr;

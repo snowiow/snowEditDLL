@@ -81,39 +81,38 @@ int main(int argc, const char* argv[]) {
     // memPoolFree(m);
     // m = NULL;
 
-    printf("Tokenize Tests: \n");
-    // DArray *test3 = tokenize("$i = 1; //$123\n/*$1 */ {$567{$halligalli}} $j\n {$fe{$te__cst}} 45\n");
-    DArray *test4 = tokenize("}");
-    printf("Found Variables:\n");
-    uint i;
-    for (i = 0; i < test4->length; i++) {
-        printf("%s\n", test4->elems[i]);
-    }
-    memPoolFree(test4->m);
-    dArrayFree(test4);
-    test4 = NULL;
-
-    // printf("Final test with file:\n");
-    // FILE *quelle;
-    // char puffer[80], text[4000] = "";
-
-    // if ((quelle=fopen("test2.rs","r")) == NULL) {
-    //     // fprintf(stderr, "Kann test.rs nicht oeffnen\n");
-    //     return -1;
-    // }
-
-    // while (fgets(puffer, 80, quelle))
-    //     strcat(text, puffer);
-
-    // fclose(quelle);
-
-    // DArray *result = tokenize(text);
+    // printf("Tokenize Tests: \n");
+    // DArray *test3 = tokenize("$hallo\n$fertig\n$hunger\n__cif(){$nur}");
+    // printf("Found Variables:\n");
     // uint i;
-    // for (i = 0; i < result->length; i++) {
-    //     printf("%s\n", result->elems[i]);
+    // for (i = 0; i < test3->length; i++) {
+    //     printf("%s\n", test3->elems[i]);
     // }
-    // memPoolFree(result->m);
-    // dArrayFree(result);
+    // memPoolFree(test3->m);
+    // dArrayFree(test3);
+    // test3 = NULL;
+
+    printf("Final test with file:\n");
+    FILE *quelle;
+    char puffer[80], text[4000] = "";
+
+    if ((quelle=fopen("test2.rs","r")) == NULL) {
+        // fprintf(stderr, "Kann test.rs nicht oeffnen\n");
+        return -1;
+    }
+
+    while (fgets(puffer, 80, quelle))
+        strcat(text, puffer);
+
+    fclose(quelle);
+
+    DArray *result = tokenize(text);
+    uint i;
+    for (i = 0; i < result->length; i++) {
+        printf("%s\n", result->elems[i]);
+    }
+    memPoolFree(result->m);
+    dArrayFree(result);
 
     return 0;
 }

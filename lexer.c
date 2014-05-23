@@ -15,6 +15,7 @@ DArray *tokenize(const char* text) {
     DArrayS *levelSets = newDArrayS();
     dArraySAppend(levelSets);
     int cursorFound = -1;
+    bool ignoreNextBrace = false;
     ulong i = 0;
     while (i < strlen(text)) {
         switch(text[i]) {
@@ -36,16 +37,21 @@ DArray *tokenize(const char* text) {
                 }
                 break;
             case '\"':
-                printf("%lu\n", i);
                 i += 1;
                 while (i < strlen(text) && text[i] != '\"' ) {
                     i += 1;
                 }
                 break;
             case '{':
-                if (cursorFound >= -1)
-                    dArraySAppend(levelSets);
+                if (ignoreNextBrace)
+                    break;
                 level += 1;
+                if (cursorFound > -1 && level > cursorFound) {
+                    while (i < strlen(text) && text[i] != '}')
+                        i += 1;
+                }
+                else if (cursorFound >= -1)
+                    dArraySAppend(levelSets);
                 i += 1;
                 break;
             case '}':
@@ -59,6 +65,18 @@ DArray *tokenize(const char* text) {
                         cursorFound = -2;
                 }
                 i += 1;
+                break;
+            case 'f':
+                i += 1;
+                if (text[i] == 'o') {
+                    i += 1;
+                    if (text[i] == 'r') {
+                        level += 1;
+                        dArraySAppend(levelSets);
+                        ignoreNextBrace = true;
+                        i += 1;
+                    }
+                }
                 break;
             case '_':
                 i += 1;
